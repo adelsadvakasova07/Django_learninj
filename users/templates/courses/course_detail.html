@@ -1,0 +1,49 @@
+
+{% block content %}
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h2 class="card-title">{{ course.title }}</h2>
+        <p class="card-text">{{ course.description }}</p>
+        <p class="text-muted">
+            <strong>Преподаватель:</strong> {{ course.teacher.username }}
+        </p>
+        <a href="{% url 'courses:course_list' %}" class="btn btn-outline-secondary btn-sm mt-2">
+            ← Назад к курсам
+        </a>
+    </div>
+</div>
+
+<!-- Комментарии -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        Комментарии
+    </div>
+    <div class="card-body">
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="mb-3 border-bottom pb-2">
+                    <p class="mb-1"><strong>{{ comment.user.username }}</strong> <small class="text-muted">{{ comment.created_at|date:"d.m.Y H:i" }}</small></p>
+                    <p class="mb-0">{{ comment.text }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">Комментариев пока нет.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Форма комментария -->
+<div class="card">
+    <div class="card-header">
+        Добавить комментарий
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.text.label_tag }}
+            {{ "comment_form.text  mb-2" }}
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

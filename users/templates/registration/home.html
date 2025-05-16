@@ -1,0 +1,42 @@
+{% extends 'registration/base.html' %}
+
+{% block title %}Главная — LearningHub{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-4 fw-bold text-primary">Добро пожаловать на LearningHub</h1>
+    <p class="lead text-muted">Учитесь, делитесь и развивайтесь вместе с нами.</p>
+</div>
+
+{% if user.is_authenticated %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Привет, {{ user.username }}!</h5>
+                    <p class="card-text">Выберите, куда хотите перейти:</p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'courses:course_list' %}" class="btn btn-outline-primary">📚 общие курсы</a>
+                        
+                        {% if user.role == 'teacher' %}
+                            <a href="{% url 'teacher_dashboard' %}" class="btn btn-outline-success">👨‍🏫 Панель преподавателя</a>
+                        {% elif user.role == 'student' %}
+                            <a href="{% url 'student_dashboard' %}" class="btn btn-outline-info">🎓 Панель студента</a>
+                        {% endif %}
+
+                        <a href="#" class="btn btn-outline-warning disabled">⭐ Избранное (в разработке)</a>
+                               <a href="{% url 'users:logout' %}" class="btn btn-outline-secondary">Выйти</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="text-center">
+        <p class="fs-5">Вы не вошли в систему.</p>
+        <a href="{% url 'users:login' %}" class="btn btn-primary me-2">Войти</a>
+        <a href="{% url 'users:register' %}" class="btn btn-outline-secondary">Зарегистрироваться</a>
+       
+    </div>
+{% endif %}
+{% endblock %}

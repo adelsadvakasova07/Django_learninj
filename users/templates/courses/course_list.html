@@ -1,0 +1,81 @@
+{% extends "registration/base.html" %}
+
+{% block title %}Курсы — LearningHub{% endblock %}
+
+{% block content %}
+<style>
+    .course-list-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .course-item {
+        padding: 1rem;
+        border-bottom: 1px solid #eaeaea;
+        transition: background-color 0.2s;
+    }
+
+    .course-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .course-link {
+        font-weight: 600;
+        color: #0d6efd;
+        text-decoration: none;
+    }
+
+    .course-link:hover {
+        text-decoration: underline;
+    }
+
+    .course-meta {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+
+    .no-courses {
+        text-align: center;
+        font-style: italic;
+        color: #999;
+        margin-top: 1rem;
+    }
+
+    .header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="course-list-container">
+        <div class="header-actions">
+            <h1 class="h3">📚 Курсы</h1>
+            {% if user.is_authenticated and user.role == 'teacher' %}
+                <a href="{% url 'courses:course_create' %}" class="btn btn-sm btn-primary">➕ Добавить курс</a>
+            {% endif %}
+        </div>
+
+        {% if courses %}
+            <ul class="list-unstyled">
+                {% for course in courses %}
+                    <li class="course-item">
+                        <a href="{% url 'courses:course_detail' course.id %}" class="course-link">
+                            {{ course.title }}
+                        </a>
+                        <div class="course-meta">Преподаватель: {{ course.teacher.username }}</div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-courses">Курсы пока не добавлены.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

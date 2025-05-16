@@ -1,0 +1,14 @@
+
+
+{% block content %}
+<h1>Добавить новый курс</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  <button type="submit" class="btn btn-success">Создать курс</button>
+</form>
+
+<a href="{% url 'courses:course_list' %}">← Назад к курсам</a>
+{% endblock %}
